@@ -1,0 +1,12 @@
+.DS_Store
+build
+build/*
+
+*.mode1v3
+*.pbxuser
+*.perspectivev3
+*.tm_build_errors
+ShopSavvy.xcodeproj/*.mode1v3
+ShopSavvy.xcodeproj/*.pbxuser
+ShopSavvy.xcodeproj/jakemarsh.pbxuser
+ShopSavvy.xcodeproj/jakemarsh.mode1v3
