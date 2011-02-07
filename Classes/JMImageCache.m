@@ -77,8 +77,8 @@ static inline NSString* cachePathForURL(NSString* key) {
 			[self setImage:i forURL:url];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-				if([self.delegate respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
-					[self.delegate cache:self didDownloadImage:i forURL:url];
+				if([self.imageCacheDelegate respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
+					[self.imageCacheDelegate cache:self didDownloadImage:i forURL:url];
 				}
 			});
 		});

@@ -11,7 +11,7 @@
 
 @class JMImageCache;
 
-@protocol JMImageCacheDelegate
+@protocol JMImageCacheDelegate <NSObject>
 
 @optional
 - (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url;

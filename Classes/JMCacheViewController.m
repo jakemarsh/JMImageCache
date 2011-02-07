@@ -15,11 +15,12 @@
 	if(self = [super init]) {
 		_imageCache = [[JMImageCache alloc] init];
 		_imageCache.imageCacheDelegate = self;
+
 		_flickrImageDictionaries = [[NSMutableArray alloc] init];
 
-		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4QX0/Screen_shot_2011-02-07_at_3.06.45_PM.png", @"ImageURL", @"Cat 1", @"Title", nil]];
-		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4R4R/Screen_shot_2011-02-07_at_3.09.52_PM.png", @"ImageURL", @"Cat 2", @"Title", nil]];
-		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4QoY/Screen_shot_2011-02-07_at_3.20.41_PM.png", @"ImageURL", @"Cat 3", @"Title", nil]];
+		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4QX0/Screen_shot_2011-02-07_at_3.06.45_PM.png", @"ImageURL", @"Cat A", @"Title", nil]];
+		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4R4R/Screen_shot_2011-02-07_at_3.09.52_PM.png", @"ImageURL", @"Cat B", @"Title", nil]];
+		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4QoY/Screen_shot_2011-02-07_at_3.20.41_PM.png", @"ImageURL", @"Cat C", @"Title", nil]];
 	}
 
 	return self;
@@ -56,16 +57,14 @@
 
 - (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
 	NSLog(@"didDownloadImage for URL = %@", url);
+	
+	for(int i = 0; i < _flickrImageDictionaries.count; i++) {
+		NSDictionary *catDict = [_flickrImageDictionaries objectAtIndex:i];
 
-	for (UIView *view in self.tableView.subviews) {
-		if([[view class] isSubclassOfClass:[UITableViewCell class]]) {
-			if([[(JMImageTableViewCell *)view imageURL] isEqualToString:url]) {
-				((JMImageTableViewCell *)view).imageView.image = i;
-
-				[((JMImageTableViewCell *)view) setNeedsDisplay];
-			}
+		if([[catDict objectForKey:@"ImageURL"] isEqualToString:url]) {
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 		}
-	}	
+	}
 }
 
 #pragma mark -
