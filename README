@@ -1,0 +1,14 @@
+My own VERY quick attempt at extracting the way I do remote image caching from one of my iOS projects.                                                         
+
+There are three states an image can be in:
+	* Cached In Memory
+	* Cached On Disk
+	* Not Cached
+	
+If an image is requested from cache, and it has never been cached, it is downloaded, stored on disk, put into memory and returned via delegate callback.
+
+If an image is requested from cache, and it has been cached, but hasn't been seen this session, it is read from disk, brought into memory and returned.
+
+If an image is request from cache, and it has been cached and it is already in memory, it is simply returned.
+
+The code is guaranteed to be pretty or bug free, but it works :)
