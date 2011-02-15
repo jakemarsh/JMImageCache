@@ -62,7 +62,17 @@ However, if you really need to, clearing the cache manually is this simple:
 If you'd like to remove a specific image from the cache, you can do this:
 
 	[_imageCache removeImageForURL:@"http://lolcats.com/DogsDrool.png"];
-	
+
+Demo App
+---
+
+This repo is actually a demo project itself. Just a simple *UITableViewController* that loads a few images from Flickr. Nothing too fancy, but it should give you a good idea of a standard usage of JMImageCache.
+
+Using JMImageCache In Your App
+---
+
+All you need to do is copy *JMImageCache.h* and *JMImageCache.m* into your project, *#import* the header where you need it, and start using it.
+
 Notes
 ---
 
