@@ -27,25 +27,25 @@ The idea behind JMImageCache is to always return images the **fastest** way poss
 How It Works (Code)
 ---
 
-#### Initialize and hang on to a reference to a JMImageCache object
+Initialize and hang on to a reference to a JMImageCache object
 
 	_imageCache = [[JMImageCache alloc] init];
 	
-#### Set the imageCacheDelegate to something that makes sense
+Set the imageCacheDelegate to something that makes sense
 
 	_imageCache.imageCacheDelegate = self;
 	
-#### Request an image like so
+Request an image like so
 
 	UIImage *catsRule = [_imageCache imageForURL:@"http://lolcats.com/DogsDrool.png"];
 	
-#### If the image needs to be downloaded, you'll be notified via a callback to the imageCacheDelegate
+If the image needs to be downloaded, you'll be notified via a callback to the imageCacheDelegate
 
 	- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
 		NSLog(@"Downloaded (And Cached) Image From URL: %@", url);
 	}
 
-#### Once you're done with it, make sure you cleanup things nicely - (most likely in - (void) dealloc)
+Once you're done with it, make sure you cleanup things nicely - (most likely in - (void) dealloc)
 
 	_imageCache.imageCacheDelegate = nil;
 	[_imageCache release]; _imageCache = nil;
