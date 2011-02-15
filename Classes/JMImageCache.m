@@ -94,6 +94,10 @@ static inline NSString* cachePathForURL(NSString* key) {
 	[super setObject:i forKey:url];
 }
 
+- (void) removeImageForURL:(NSString *)url {
+	[super removeObjectForKey:keyForURL(url)];
+}
+
 #pragma mark -
 #pragma mark Disk Writing Operations
 

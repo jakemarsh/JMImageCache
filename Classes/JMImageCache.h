@@ -31,6 +31,7 @@
 - (UIImage *) imageFromDiskForURL:(NSString *)url;
 
 - (void) setImage:(UIImage *)i forURL:(NSString *)url;
+- (void) removeImageForURL:(NSString *)url;
 
 - (void) writeData:(NSData*)data toPath:(NSString *)path;
 - (void) performDiskWriteOperation:(NSInvocation *)invoction;
