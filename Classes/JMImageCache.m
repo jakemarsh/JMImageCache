@@ -12,12 +12,7 @@ static NSString* _JMImageCacheDirectory;
 
 static inline NSString* JMImageCacheDirectory() {
 	if(!_JMImageCacheDirectory) {
-#ifdef TARGET_OS_IPHONE
 		_JMImageCacheDirectory = [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/JMCache"] copy];
-#else
-		NSString* appSupportDir = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-		_JMImageCacheDirectory = [[[appSupportDir stringByAppendingPathComponent:[[NSProcessInfo processInfo] processName]] stringByAppendingPathComponent:@"JMCache"] copy];
-#endif
 	}
 
 	return _JMImageCacheDirectory;
