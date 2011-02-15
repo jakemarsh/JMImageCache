@@ -11,4 +11,4 @@ If an image is requested from cache, and it has been cached, but hasn't been see
 
 If an image is request from cache, and it has been cached and it is already in memory, it is simply returned.
 
-The code is guaranteed to be pretty or bug free, but it works :)
+The code is not guaranteed to be pretty or bug free, but it works :)
