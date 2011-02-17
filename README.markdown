@@ -29,7 +29,7 @@ How It Works (Code)
 
 Initialize and hang on to a reference to a JMImageCache object
 
-	_imageCache = [[JMImageCache alloc] init];
+	JMImageCache *_imageCache = [[JMImageCache alloc] init];
 	
 Set the imageCacheDelegate to something that makes sense
 
