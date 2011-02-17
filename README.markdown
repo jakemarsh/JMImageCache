@@ -39,6 +39,8 @@ Request an image like so
 
 	UIImage *catsRule = [_imageCache imageForURL:@"http://lolcats.com/DogsDrool.png"];
 	
+imageForURL: will return either or a UIImage object, or nil. If it returns nil, then that means the image needs to be downloaded.
+
 If the image needs to be downloaded, you'll be notified via a callback to the imageCacheDelegate
 
 	- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
