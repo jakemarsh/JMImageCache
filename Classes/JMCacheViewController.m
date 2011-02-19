@@ -23,7 +23,7 @@
 		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4hF3/Untitled-7.png", @"ImageURL", @"Dwight Schrute", @"Title", nil]];
 		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4hxj/Untitled-7.png", @"ImageURL", @"Andy Bernard", @"Title", nil]];
 		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iNI/Untitled-7.png", @"ImageURL", @"Kevin Malone", @"Title", nil]];
-		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iAX/Untitled-7.png", @"ImageURL", @"Stanley Hudson", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iAX/Untitled-7.png", @"ImageURL", @"Stanley Hudson", @"Title", nil]];		
 	}
 
 	return self;
@@ -39,8 +39,8 @@
 	JMImageTableViewCell *cell = (JMImageTableViewCell* )[tableView dequeueReusableCellWithIdentifier:@"JMImageTableViewCell"];
 	if(cell == nil) cell = [[[JMImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"JMImageTableViewCell"] autorelease];
 
-	NSString *imageURL = [[_imagesToLoad objectAtIndex:indexPath.row] objectForKey:@"ImageURL"];
-	cell.imageView.image = [[JMImageCache sharedCache] imageForURL:imageURL delegate:cell];
+	cell.imageURL = [[_imagesToLoad objectAtIndex:indexPath.row] objectForKey:@"ImageURL"];
+	cell.imageView.image = [[JMImageCache sharedCache] imageForURL:cell.imageURL delegate:cell];
 
 	cell.textLabel.text = [[_imagesToLoad objectAtIndex:indexPath.row] objectForKey:@"Title"];
 
