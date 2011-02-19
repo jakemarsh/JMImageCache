@@ -17,12 +17,17 @@ static inline NSString* JMImageCacheDirectory() {
 
 	return _JMImageCacheDirectory;
 }
+
+
 inline static NSString* keyForURL(NSString *url) {
 	return [NSString stringWithFormat:@"JMImageCache-%u", [url hash]];
 }
+
+
 static inline NSString* cachePathForURL(NSString* key) {
 	return [JMImageCacheDirectory() stringByAppendingPathComponent:keyForURL(key)];
 }
+
 
 JMImageCache *_sharedCache = nil;
 
@@ -36,6 +41,7 @@ JMImageCache *_sharedCache = nil;
 	return _sharedCache;
 }
 
+
 - (id) init {
 	if((self = [super init])) {
 		_diskOperationQueue = [[NSOperationQueue alloc] init];
@@ -48,6 +54,7 @@ JMImageCache *_sharedCache = nil;
 	
 	return self;
 }
+
 
 #pragma mark -
 #pragma mark Getter Methods
@@ -91,11 +98,14 @@ JMImageCache *_sharedCache = nil;
 		return nil;
 	}
 }
+
+
 - (UIImage *) imageFromDiskForURL:(NSString *)url {
 	UIImage *i = [[[UIImage alloc] initWithData:[NSData dataWithContentsOfFile:cachePathForURL(url) options:0 error:NULL]] autorelease];
 
 	return i;
 }
+
 
 #pragma mark -
 #pragma Setter Methods
@@ -104,25 +114,29 @@ JMImageCache *_sharedCache = nil;
 	[super setObject:i forKey:url];
 }
 
+
 - (void) removeImageForURL:(NSString *)url {
 	[super removeObjectForKey:keyForURL(url)];
 }
+
 
 #pragma mark -
 #pragma mark Disk Writing Operations
 
 - (void) writeData:(NSData*)data toPath:(NSString *)path {
 	[data writeToFile:path atomically:YES];
-} 
+}
+
+
 - (void) performDiskWriteOperation:(NSInvocation *)invoction {
 	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invoction];
 	[_diskOperationQueue addOperation:operation];
 	[operation release];
 }
 
+
 - (void) dealloc {
 	[_diskOperationQueue release];
-
 	[super dealloc];
 }
 

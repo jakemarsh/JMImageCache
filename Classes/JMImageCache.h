@@ -6,9 +6,6 @@
 //  Copyright 2011 Rubber Duck Software. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-
 @class JMImageCache;
 
 @protocol JMImageCacheDelegate <NSObject>
@@ -19,7 +16,9 @@
 @end
 
 @interface JMImageCache : NSCache {
+	
 @private
+	
 	NSOperationQueue *_diskOperationQueue;
 }
 

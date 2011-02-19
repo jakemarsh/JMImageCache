@@ -12,7 +12,7 @@
 @implementation JMCacheViewController
 
 - (id) init {
-	if(self = [super init]) {
+	if((self = [super init])) {
 		self.title = @"The Office";
 
 		_imagesToLoad = [[NSMutableArray alloc] init];
@@ -29,12 +29,15 @@
 	return self;
 }
 
+
 #pragma mark -
 #pragma mark UITableViewDataSource
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [_imagesToLoad count];
 }
+
+
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	JMImageTableViewCell *cell = (JMImageTableViewCell* )[tableView dequeueReusableCellWithIdentifier:@"JMImageTableViewCell"];
 	if(cell == nil) cell = [[[JMImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"JMImageTableViewCell"] autorelease];
@@ -47,15 +50,19 @@
 	return cell;
 }
 
+
 #pragma mark -
 #pragma mark UITableViewDelegate
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 90.0;
 }
+
+
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
 
 #pragma mark -
 #pragma mark Autorotation Methods
@@ -64,12 +71,15 @@
 	return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
+
 #pragma mark -
 #pragma mark Cleanup Methods
 
 - (void) didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
 }
+
+
 - (void) dealloc {
 	[_imagesToLoad release]; _imagesToLoad = nil;
 

@@ -6,19 +6,11 @@
 //  Copyright 2011 Rubber Duck Software. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-@class JMCacheViewController, JMImageCache;
-
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
-	UIWindow *window;
-
-	UINavigationController *mainNavigationController;
-	JMCacheViewController *viewController;
+	
+	UIWindow *_window;
 }
 
 @property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) UINavigationController *mainNavigationController;
-@property (nonatomic, retain) JMCacheViewController *viewController;
 
 @end

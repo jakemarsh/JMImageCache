@@ -8,38 +8,37 @@
 
 #import "AppDelegate.h"
 #import "JMCacheViewController.h"
-#import "JMImageCache.h"
 
 @implementation AppDelegate
 
-@synthesize window;
-@synthesize mainNavigationController;
-@synthesize viewController;
+@synthesize window = _window;
+
+#pragma mark -
+#pragma mark NSObject
+
+- (void) dealloc {
+	[_window release];	
+	[super dealloc];
+}
+
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-	self.viewController = [[JMCacheViewController alloc] init];
-	self.mainNavigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+	JMCacheViewController *viewController = [[JMCacheViewController alloc] init];
+	UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 
-	[self.window addSubview:mainNavigationController.view];
-	[self.window makeKeyAndVisible];
-
-	return YES;
-}
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void) dealloc {
+	_window.rootViewController = mainNavigationController;
+	
 	[viewController release];
 	[mainNavigationController release];
-	[window release];
+	
+	[_window makeKeyAndVisible];
 
-	[super dealloc];
+	return YES;
 }
 
 @end

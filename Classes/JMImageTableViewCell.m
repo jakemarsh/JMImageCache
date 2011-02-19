@@ -13,6 +13,15 @@
 @synthesize imageURL = _imageURL;
 
 #pragma mark -
+#pragma mark NSObject
+
+- (void) dealloc {
+	[_imageURL release];
+	[super dealloc];
+}
+
+
+#pragma mark -
 #pragma mark JMImageCacheDelegate Methods
 
 - (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
@@ -22,11 +31,6 @@
 		self.imageView.image = i;
 		[self setNeedsLayout];
 	}
-}
-
-- (void) dealloc {
-	[_imageURL release];
-	[super dealloc];
 }
 
 @end

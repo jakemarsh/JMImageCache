@@ -6,10 +6,10 @@
 //  Copyright 2011 Rubber Duck Software. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "JMImageCache.h"
 
 @interface JMImageTableViewCell : UITableViewCell <JMImageCacheDelegate> {
+	
 	NSString *_imageURL;
 }
 
