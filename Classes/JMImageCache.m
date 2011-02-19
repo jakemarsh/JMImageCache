@@ -24,9 +24,17 @@ static inline NSString* cachePathForURL(NSString* key) {
 	return [JMImageCacheDirectory() stringByAppendingPathComponent:keyForURL(key)];
 }
 
+JMImageCache *_sharedCache = nil;
+
 @implementation JMImageCache
 
-@synthesize imageCacheDelegate = _imageCacheDelegate;
++ (JMImageCache *) sharedCache {
+	if(!_sharedCache) {
+		_sharedCache = [[JMImageCache alloc] init];
+	}
+
+	return _sharedCache;
+}
 
 - (id) init {
 	if((self = [super init])) {
@@ -44,7 +52,7 @@ static inline NSString* cachePathForURL(NSString* key) {
 #pragma mark -
 #pragma mark Getter Methods
 
-- (UIImage *) imageForURL:(NSString *)url {
+- (UIImage *) imageForURL:(NSString *)url delegate:(id<JMImageCacheDelegate>)d {
 	id returner = [super objectForKey:url];
 
 	if(returner) {
@@ -72,8 +80,10 @@ static inline NSString* cachePathForURL(NSString* key) {
 			[self setImage:i forURL:url];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
-				if([self.imageCacheDelegate respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
-					[self.imageCacheDelegate cache:self didDownloadImage:i forURL:url];
+				if(d) {
+					if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
+						[d cache:self didDownloadImage:i forURL:url];
+					}
 				}
 			});
 		});

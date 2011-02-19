@@ -13,14 +13,17 @@
 
 - (id) init {
 	if(self = [super init]) {
-		_imageCache = [[JMImageCache alloc] init];
-		_imageCache.imageCacheDelegate = self;
+		self.title = @"The Office";
 
-		_flickrImageDictionaries = [[NSMutableArray alloc] init];
+		_imagesToLoad = [[NSMutableArray alloc] init];
 
-		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4QX0/Screen_shot_2011-02-07_at_3.06.45_PM.png", @"ImageURL", @"Cat A", @"Title", nil]];
-		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4R4R/Screen_shot_2011-02-07_at_3.09.52_PM.png", @"ImageURL", @"Cat B", @"Title", nil]];
-		[_flickrImageDictionaries addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4QoY/Screen_shot_2011-02-07_at_3.20.41_PM.png", @"ImageURL", @"Cat C", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4hCR/Untitled-7.png", @"ImageURL", @"Michael Scott", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iIc/Untitled-7.png", @"ImageURL", @"Jim Halpert", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4hVv/Untitled-7.png", @"ImageURL", @"Pam Beasley-Halpert", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4hF3/Untitled-7.png", @"ImageURL", @"Dwight Schrute", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4hxj/Untitled-7.png", @"ImageURL", @"Andy Bernard", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iNI/Untitled-7.png", @"ImageURL", @"Kevin Malone", @"Title", nil]];
+		[_imagesToLoad addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iAX/Untitled-7.png", @"ImageURL", @"Stanley Hudson", @"Title", nil]];
 	}
 
 	return self;
@@ -30,17 +33,16 @@
 #pragma mark UITableViewDataSource
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [_flickrImageDictionaries count];
+	return [_imagesToLoad count];
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	JMImageTableViewCell *cell = (JMImageTableViewCell* )[tableView dequeueReusableCellWithIdentifier:@"JMImageTableViewCell"];
-	if(cell == nil) {
-		cell = [[[JMImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"JMImageTableViewCell"] autorelease];
-	}
+	if(cell == nil) cell = [[[JMImageTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"JMImageTableViewCell"] autorelease];
 
-	cell.imageURL = [[_flickrImageDictionaries objectAtIndex:indexPath.row] objectForKey:@"ImageURL"];
-	cell.imageView.image = [_imageCache imageForURL:cell.imageURL];
-	cell.textLabel.text = [[_flickrImageDictionaries objectAtIndex:indexPath.row] objectForKey:@"Title"];
+	NSString *imageURL = [[_imagesToLoad objectAtIndex:indexPath.row] objectForKey:@"ImageURL"];
+	cell.imageView.image = [[JMImageCache sharedCache] imageForURL:imageURL delegate:cell];
+
+	cell.textLabel.text = [[_imagesToLoad objectAtIndex:indexPath.row] objectForKey:@"Title"];
 
 	return cell;
 }
@@ -51,20 +53,15 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 90.0;
 }
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 #pragma mark -
-#pragma mark JMImageCacheDelegate Methods
+#pragma mark Autorotation Methods
 
-- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
-	NSLog(@"didDownloadImage for URL = %@", url);
-	
-	for(int i = 0; i < _flickrImageDictionaries.count; i++) {
-		NSDictionary *catDict = [_flickrImageDictionaries objectAtIndex:i];
-
-		if([[catDict objectForKey:@"ImageURL"] isEqualToString:url]) {
-			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-		}
-	}
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
 #pragma mark -
@@ -73,15 +70,8 @@
 - (void) didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning];
 }
-- (void) viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
 - (void) dealloc {
-	_imageCache.imageCacheDelegate = nil;
-	[_imageCache release]; _imageCache = nil;
-
-	[_flickrImageDictionaries release]; _flickrImageDictionaries = nil;
+	[_imagesToLoad release]; _imagesToLoad = nil;
 
 	[super dealloc];
 }

@@ -12,10 +12,13 @@
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow *window;
+
+	UINavigationController *mainNavigationController;
 	JMCacheViewController *viewController;
 }
 
 @property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain) UINavigationController *mainNavigationController;
 @property (nonatomic, retain) JMCacheViewController *viewController;
 
 @end

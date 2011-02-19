@@ -7,12 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JMImageCache.h"
 
-@interface JMCacheViewController : UITableViewController <JMImageCacheDelegate, UITableViewDelegate, UITableViewDataSource> {
-	JMImageCache *_imageCache;
-
-	NSMutableArray *_flickrImageDictionaries;
+@interface JMCacheViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource> {
+	NSMutableArray *_imagesToLoad;
 }
 
 @end

@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JMImageCache.h"
 
-@interface JMImageTableViewCell : UITableViewCell {
-	NSString *_imageURL;
+@interface JMImageTableViewCell : UITableViewCell <JMImageCacheDelegate> {
+
 }
-
-@property (nonatomic, retain) NSString *imageURL;
 
 @end

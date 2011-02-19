@@ -10,12 +10,14 @@
 
 @implementation JMImageTableViewCell
 
-@synthesize imageURL = _imageURL;
+#pragma mark -
+#pragma mark JMImageCacheDelegate Methods
 
-- (void) dealloc {
-	self.imageURL = nil;
+- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
+	NSLog(@"didDownloadImage for URL = %@", url);
 
-	[super dealloc];
+	self.imageView.image = i;
+	[self setNeedsLayout];
 }
 
 @end

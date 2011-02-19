@@ -27,30 +27,17 @@ The idea behind `JMImageCache` is to always return images the **fastest** way po
 How It Works (Code)
 ---
 
-Initialize and hang on to a reference to a `JMImageCache` object:
-
-	JMImageCache *_imageCache = [[JMImageCache alloc] init];
-	
-Set the `imageCacheDelegate` to something that makes sense:
-
-	_imageCache.imageCacheDelegate = self;
-	
 Request an image like so
 
-	UIImage *catsRule = [_imageCache imageForURL:@"http://lolcats.com/DogsDrool.png"];
+	UIImage *catsRule = [[JMImageCache sharedCache] imageForURL:@"http://lolcats.com/DogsDrool.png" delegate:self];
 	
-`imageForURL:` will return either a `UIImage` object, or `nil`. If it returns `nil`, then that means the image needs to be downloaded.
+`imageForURL:delegate:` will return either a `UIImage` object, or `nil`. If it returns `nil`, then that means the image needs to be downloaded.
 
-If the image needs to be downloaded, you'll be notified via a callback to the `imageCacheDelegate` object you set previously:
+If the image needs to be downloaded, you'll be notified via a callback to the delegate object you specified in `imageForURL:delegate:`:
 
 	- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url {
 		NSLog(@"Downloaded (And Cached) Image From URL: %@", url);
 	}
-
-Once you're done with it, make sure you cleanup things nicely - (most likely in `- (void) dealloc`):
-
-	_imageCache.imageCacheDelegate = nil;
-	[_imageCache release]; _imageCache = nil;
 	
 Clearing The Cache
 ---
@@ -59,16 +46,16 @@ The beauty of building on top of `NSCache` is that` JMImageCache` handles low me
 
 However, if you really need to, clearing the cache manually is this simple:
 	
-	[_imageCache removeAllObjects];
+	[[JMImageCache sharedCache] removeAllObjects];
 	
 If you'd like to remove a specific image from the cache, you can do this:
 
-	[_imageCache removeImageForURL:@"http://lolcats.com/DogsDrool.png"];
+	[[JMImageCache sharedCache] removeImageForURL:@"http://lolcats.com/DogsDrool.png"];
 
 Demo App
 ---
 
-This repo is actually a demo project itself. Just a simple `UITableViewController` that loads a few images from Flickr. Nothing too fancy, but it should give you a good idea of a standard usage of `JMImageCache`.
+This repository is actually a demo project itself. Just a simple `UITableViewController` app that loads a few images. It does so by calling `imageForURL:delegate:` and passing in the `UITableViewCell` as the `JMImageCacheDelegate` to respond to when an image is downloaded. Then we simply set the `image` of the cell's `imageView` and then call `setNeedsLayout` on the cell to refresh the view. Nothing too fancy, but it should give you a good idea of a standard usage of `JMImageCache`.
 
 Using `JMImageCache` In Your App
 ---

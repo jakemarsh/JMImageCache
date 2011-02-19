@@ -19,15 +19,13 @@
 @end
 
 @interface JMImageCache : NSCache {
-	id <JMImageCacheDelegate> _imageCacheDelegate;
-	
 @private
 	NSOperationQueue *_diskOperationQueue;
 }
 
-@property (nonatomic, assign) id <JMImageCacheDelegate> imageCacheDelegate;
++ (JMImageCache *) sharedCache;
 
-- (UIImage *) imageForURL:(NSString *)url;
+- (UIImage *) imageForURL:(NSString *)url delegate:(id<JMImageCacheDelegate>)d;
 - (UIImage *) imageFromDiskForURL:(NSString *)url;
 
 - (void) setImage:(UIImage *)i forURL:(NSString *)url;
