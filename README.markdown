@@ -27,9 +27,9 @@ The idea behind `JMImageCache` is to always return images the **fastest** way po
 How It Works (Code)
 ---
 
-Request an image like so
+Request an image like so:
 
-	UIImage *catsRule = [[JMImageCache sharedCache] imageForURL:@"http://dundermifflin.com/i/MichaelScott.png" delegate:self];
+	UIImage *mScott = [[JMImageCache sharedCache] imageForURL:@"http://dundermifflin.com/i/MichaelScott.png" delegate:self];
 
 `imageForURL:delegate:` will return either a `UIImage` object, or `nil`. If it returns `nil`, then that means the image needs to be downloaded.
 
