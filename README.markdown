@@ -57,7 +57,7 @@ Demo App
 
 This repository is actually a demo project itself. Just a simple `UITableViewController` app that loads a few images. It does so by calling `imageForURL:delegate:` and passing in the `UITableViewCell` as the `JMImageCacheDelegate` to respond to when an image is downloaded. Then we simply set the `image` of the cell's `imageView` and then call `setNeedsLayout` on the cell to refresh the view. Nothing too fancy, but it should give you a good idea of a standard usage of `JMImageCache`.
 
-Using `JMImageCache` In Your App
+Using JMImageCache In Your App
 ---
 
 All you need to do is copy `JMImageCache.h` and `JMImageCache.m` into your project, `#import` the header where you need it, and start using it.
