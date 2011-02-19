@@ -29,8 +29,8 @@ How It Works (Code)
 
 Request an image like so
 
-	UIImage *catsRule = [[JMImageCache sharedCache] imageForURL:@"http://lolcats.com/DogsDrool.png" delegate:self];
-	
+	UIImage *catsRule = [[JMImageCache sharedCache] imageForURL:@"http://dundermifflin.com/employees/MichaelScott.png" delegate:self];
+
 `imageForURL:delegate:` will return either a `UIImage` object, or `nil`. If it returns `nil`, then that means the image needs to be downloaded.
 
 If the image needs to be downloaded, you'll be notified via a callback to the delegate object you specified in `imageForURL:delegate:`:
@@ -50,7 +50,7 @@ However, if you really need to, clearing the cache manually is this simple:
 	
 If you'd like to remove a specific image from the cache, you can do this:
 
-	[[JMImageCache sharedCache] removeImageForURL:@"http://lolcats.com/DogsDrool.png"];
+	[[JMImageCache sharedCache] removeImageForURL:@"http://dundermifflin.com/employees/MichaelScott.png"];
 
 Demo App
 ---
