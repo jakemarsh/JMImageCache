@@ -7,32 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
-		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		28D7ACF80DDB3853001CB0EB /* JMCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* JMCacheViewController.m */; };
-		3039A94B13008AA2004311DA /* JMImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3039A94A13008AA2004311DA /* JMImageCache.m */; };
-		307F1B75130097B600BD98C0 /* JMImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 307F1B74130097B600BD98C0 /* JMImageTableViewCell.m */; };
+		B2C2B02A131072D100BCA7EB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2B020131072D100BCA7EB /* AppDelegate.m */; };
+		B2C2B02B131072D100BCA7EB /* JMCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2B022131072D100BCA7EB /* JMCacheViewController.m */; };
+		B2C2B02C131072D100BCA7EB /* JMImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2B024131072D100BCA7EB /* JMImageTableViewCell.m */; };
+		B2C2B02D131072D100BCA7EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2B027131072D100BCA7EB /* main.m */; };
+		B2C2B033131072E200BCA7EB /* JMImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B2C2B032131072E200BCA7EB /* JMImageCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* JMImageCacheDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JMImageCacheDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		28D7ACF60DDB3853001CB0EB /* JMCacheViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMCacheViewController.h; sourceTree = "<group>"; };
-		28D7ACF70DDB3853001CB0EB /* JMCacheViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMCacheViewController.m; sourceTree = "<group>"; };
-		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3039A94913008AA2004311DA /* JMImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageCache.h; sourceTree = "<group>"; };
-		3039A94A13008AA2004311DA /* JMImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMImageCache.m; sourceTree = "<group>"; };
-		307F1B73130097B600BD98C0 /* JMImageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageTableViewCell.h; sourceTree = "<group>"; };
-		307F1B74130097B600BD98C0 /* JMImageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMImageTableViewCell.m; sourceTree = "<group>"; };
-		32CA4F630368D1EE00C91783 /* JMImageCacheDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageCacheDemo_Prefix.pch; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* JMImageCacheDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "JMImageCacheDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B2C2B01F131072D100BCA7EB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B2C2B020131072D100BCA7EB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B2C2B021131072D100BCA7EB /* JMCacheViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMCacheViewController.h; sourceTree = "<group>"; };
+		B2C2B022131072D100BCA7EB /* JMCacheViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMCacheViewController.m; sourceTree = "<group>"; };
+		B2C2B023131072D100BCA7EB /* JMImageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageTableViewCell.h; sourceTree = "<group>"; };
+		B2C2B024131072D100BCA7EB /* JMImageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMImageTableViewCell.m; sourceTree = "<group>"; };
+		B2C2B026131072D100BCA7EB /* JMImageCacheDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageCacheDemo_Prefix.pch; sourceTree = "<group>"; };
+		B2C2B027131072D100BCA7EB /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B2C2B029131072D100BCA7EB /* JMImageCacheDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "JMImageCacheDemo-Info.plist"; sourceTree = "<group>"; };
+		B2C2B031131072E200BCA7EB /* JMImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JMImageCache.h; path = ../JMImageCache.h; sourceTree = "<group>"; };
+		B2C2B032131072E200BCA7EB /* JMImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JMImageCache.m; path = ../JMImageCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,21 +49,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				1D3623240D0F684500981E51 /* AppDelegate.h */,
-				1D3623250D0F684500981E51 /* AppDelegate.m */,
-				28D7ACF60DDB3853001CB0EB /* JMCacheViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* JMCacheViewController.m */,
-				3039A94913008AA2004311DA /* JMImageCache.h */,
-				3039A94A13008AA2004311DA /* JMImageCache.m */,
-				307F1B73130097B600BD98C0 /* JMImageTableViewCell.h */,
-				307F1B74130097B600BD98C0 /* JMImageTableViewCell.m */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,30 +60,14 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				080E96DDFE201D6D7F000001 /* Classes */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
-				29B97317FDCFA39411CA2CEA /* Resources */,
+				B2C2B030131072D800BCA7EB /* JMImageCache */,
+				B2C2B01E131072D100BCA7EB /* Classes */,
+				B2C2B025131072D100BCA7EB /* Other Sources */,
+				B2C2B028131072D100BCA7EB /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = CustomTemplate;
-			sourceTree = "<group>";
-		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				32CA4F630368D1EE00C91783 /* JMImageCacheDemo_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
-			);
-			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		29B97317FDCFA39411CA2CEA /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				8D1107310486CEB800E47090 /* JMImageCacheDemo-Info.plist */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -109,6 +78,45 @@
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B2C2B01E131072D100BCA7EB /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2B01F131072D100BCA7EB /* AppDelegate.h */,
+				B2C2B020131072D100BCA7EB /* AppDelegate.m */,
+				B2C2B021131072D100BCA7EB /* JMCacheViewController.h */,
+				B2C2B022131072D100BCA7EB /* JMCacheViewController.m */,
+				B2C2B023131072D100BCA7EB /* JMImageTableViewCell.h */,
+				B2C2B024131072D100BCA7EB /* JMImageTableViewCell.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		B2C2B025131072D100BCA7EB /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2B026131072D100BCA7EB /* JMImageCacheDemo_Prefix.pch */,
+				B2C2B027131072D100BCA7EB /* main.m */,
+			);
+			path = "Other Sources";
+			sourceTree = "<group>";
+		};
+		B2C2B028131072D100BCA7EB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2B029131072D100BCA7EB /* JMImageCacheDemo-Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B2C2B030131072D800BCA7EB /* JMImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				B2C2B031131072E200BCA7EB /* JMImageCache.h */,
+				B2C2B032131072E200BCA7EB /* JMImageCache.m */,
+			);
+			name = JMImageCache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,11 +178,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
-				28D7ACF80DDB3853001CB0EB /* JMCacheViewController.m in Sources */,
-				3039A94B13008AA2004311DA /* JMImageCache.m in Sources */,
-				307F1B75130097B600BD98C0 /* JMImageTableViewCell.m in Sources */,
+				B2C2B02A131072D100BCA7EB /* AppDelegate.m in Sources */,
+				B2C2B02B131072D100BCA7EB /* JMCacheViewController.m in Sources */,
+				B2C2B02C131072D100BCA7EB /* JMImageTableViewCell.m in Sources */,
+				B2C2B02D131072D100BCA7EB /* main.m in Sources */,
+				B2C2B033131072E200BCA7EB /* JMImageCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,8 +197,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = JMImageCacheDemo_Prefix.pch;
-				INFOPLIST_FILE = "JMImageCacheDemo-Info.plist";
+				GCC_PREFIX_HEADER = "Other Sources/JMImageCacheDemo_Prefix.pch";
+				INFOPLIST_FILE = "Resources/JMImageCacheDemo-Info.plist";
 				PRODUCT_NAME = JMImageCacheDemo;
 			};
 			name = Debug;
@@ -201,8 +209,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = JMImageCacheDemo_Prefix.pch;
-				INFOPLIST_FILE = "JMImageCacheDemo-Info.plist";
+				GCC_PREFIX_HEADER = "Other Sources/JMImageCacheDemo_Prefix.pch";
+				INFOPLIST_FILE = "Resources/JMImageCacheDemo-Info.plist";
 				PRODUCT_NAME = JMImageCacheDemo;
 				VALIDATE_PRODUCT = YES;
 			};
