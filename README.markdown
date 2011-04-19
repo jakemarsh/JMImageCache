@@ -49,8 +49,9 @@ However, if you really need to, clearing the cache manually is this simple:
 	[[JMImageCache sharedCache] removeAllObjects];
 	
 If you'd like to remove a specific image from the cache, you can do this:
-
+```
 	[[JMImageCache sharedCache] removeImageForURL:@"http://dundermifflin.com/i/MichaelScott.png"];
+```
 
 Demo App
 ---
