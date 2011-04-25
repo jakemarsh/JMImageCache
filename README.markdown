@@ -1,3 +1,7 @@
+<div style="float:left;margin:0 10px 10px 0" markdown="1">
+![Graphic](http://cl.ly/4gtv/Untitled-5.png)
+</div>
+
 JMImageCache
 =============
 
