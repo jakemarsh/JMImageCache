@@ -1,4 +1,4 @@
-<a style="float: right; margin: 20px;" href="https://github.com/jakemarsh/JMImageCache" target="_new"><img src="http://cl.ly/4gtv/Untitled-5.png" /></a>
+<a style="float: right; margin: 20px;" href="https://github.com/jakemarsh/JMImageCache"><img src="http://cl.ly/4gtj/Untitled-6.png" /></a>
 
 JMImageCache
 =============
