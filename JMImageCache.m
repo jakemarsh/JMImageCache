@@ -60,6 +60,10 @@ JMImageCache *_sharedCache = nil;
 #pragma mark Getter Methods
 
 - (UIImage *) imageForURL:(NSString *)url delegate:(id<JMImageCacheDelegate>)d {
+	if(!url) {
+		return nil;
+	}
+
 	id returner = [super objectForKey:url];
 
 	if(returner) {
