@@ -1,5 +1,5 @@
 //
-//  JMCache.h
+//  JMImageCache.h
 //  JMCache
 //
 //  Created by Jake Marsh on 2/7/11.

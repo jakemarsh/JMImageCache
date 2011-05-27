@@ -29,7 +29,9 @@ How It Works (Code)
 
 Request an image like so:
 
-	UIImage *mScott = [[JMImageCache sharedCache] imageForURL:@"http://dundermifflin.com/i/MichaelScott.png" delegate:self];
+```objective-c
+UIImage *mScott = [[JMImageCache sharedCache] imageForURL:@"http://dundermifflin.com/i/MichaelScott.png" delegate:self];
+```
 
 `imageForURL:delegate:` will return either a `UIImage` object, or `nil`. If it returns `nil`, then that means the image needs to be downloaded.
 
@@ -46,11 +48,15 @@ The beauty of building on top of `NSCache` is that` JMImageCache` handles low me
 
 However, if you really need to, clearing the cache manually is this simple:
 	
-	[[JMImageCache sharedCache] removeAllObjects];
+```objective-c
+[[JMImageCache sharedCache] removeAllObjects];
+```
 	
 If you'd like to remove a specific image from the cache, you can do this:
 
-	[[JMImageCache sharedCache] removeImageForURL:@"http://dundermifflin.com/i/MichaelScott.png"];
+```objective-c
+[[JMImageCache sharedCache] removeImageForURL:@"http://dundermifflin.com/i/MichaelScott.png"];
+```
 
 Demo App
 ---

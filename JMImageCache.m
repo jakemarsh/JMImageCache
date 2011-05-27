@@ -1,5 +1,5 @@
 //
-//  JMCache.m
+//  JMImageCache.m
 //  JMCache
 //
 //  Created by Jake Marsh on 2/7/11.
