@@ -115,7 +115,9 @@ JMImageCache *_sharedCache = nil;
 #pragma mark Setter Methods
 
 - (void) setImage:(UIImage *)i forURL:(NSString *)url {
-	[super setObject:i forKey:url];
+	if (i) {
+		[super setObject:i forKey:url];
+	}
 }
 
 
