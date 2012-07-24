@@ -6,7 +6,7 @@
 
 ## Screenshots (Demo App)
 
-<center><img src="http://cl.ly/IHSG/iOS%20Simulator%20Screen%20shot%20Jul%2023,%202012%208.25.33%20PM.png" title="UITableView Loading Images" /></center>
+<center><img src="http://cl.ly/IHSG/iOS%20Simulator%20Screen%20shot%20Jul%2023,%202012%208.25.33%20PM.png" title="UITableView Loading Images" width="320" /></center>
 
 ## How It Works (Logically)
 
