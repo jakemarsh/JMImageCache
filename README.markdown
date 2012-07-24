@@ -81,3 +81,7 @@ Now run `pod install` to install the dependency.
     $ git submodule add https://github.com/jakemarsh/JMImageCache.git Vendor/JMImageCache
 
 Add the 4 Objective-C files inside the `JMImageCache` folder to your project. `#import "JMImageCache.h" where you need it.`
+
+## ARC (Automatic Reference Counting)
+
+`JMImageCache` uses [Automatic Reference Counting (ARC)](http://clang.llvm.org/docs/AutomaticReferenceCounting.html). If your project doesn't use ARC, you will need to set the `-fobjc-arc` compiler flag on all of the `JMImageCache` source files. To do this in Xcode, go to your active target and select the "Build Phases" tab. In the "Compiler Flags" column, set `-fobjc-arc` for each of the `JMImageCache` source files.
