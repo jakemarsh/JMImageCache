@@ -3,14 +3,10 @@
 //  JMCache
 //
 //  Created by Jake Marsh on 2/7/11.
-//  Copyright 2011 Rubber Duck Software. All rights reserved.
+//  Copyright 2011 Jake Marsh. All rights reserved.
 //
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
-	
-	UIWindow *_window;
-}
+@interface AppDelegate : NSObject <UIApplicationDelegate>
 
-@property (nonatomic, retain) UIWindow *window;
 
 @end

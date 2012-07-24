@@ -3,34 +3,33 @@
 //  JMCache
 //
 //  Created by Jake Marsh on 2/7/11.
-//  Copyright 2011 Rubber Duck Software. All rights reserved.
+//  Copyright 2011 Jake Marsh. All rights reserved.
 //
+
+#import "UIImageView+JMImageCache.h"
 
 @class JMImageCache;
 
 @protocol JMImageCacheDelegate <NSObject>
 
 @optional
-- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url;
+- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSURL *)url;
 
 @end
 
-@interface JMImageCache : NSCache {
-	
-@private
-	
-	NSOperationQueue *_diskOperationQueue;
-}
+@interface JMImageCache : NSCache
 
 + (JMImageCache *) sharedCache;
 
-- (UIImage *) imageForURL:(NSString *)url delegate:(id<JMImageCacheDelegate>)d;
-- (UIImage *) imageFromDiskForURL:(NSString *)url;
+- (UIImage *) cachedImageForURL:(NSURL *)url;
+- (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion;
+- (UIImage *) imageForURL:(NSURL *)url delegate:(id<JMImageCacheDelegate>)d;
+- (UIImage *) imageFromDiskForURL:(NSURL *)url;
 
-- (void) setImage:(UIImage *)i forURL:(NSString *)url;
+- (void) setImage:(UIImage *)i forURL:(NSURL *)url;
 - (void) removeImageForURL:(NSString *)url;
 
-- (void) writeData:(NSData*)data toPath:(NSString *)path;
+- (void) writeData:(NSData *)data toPath:(NSString *)path;
 - (void) performDiskWriteOperation:(NSInvocation *)invoction;
 
 @end
