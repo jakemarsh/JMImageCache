@@ -162,7 +162,7 @@ JMImageCache *_sharedCache = nil;
         [self _downloadAndWriteImageForURL:url completionBlock:^(UIImage *image) {
             if(d) {
                 if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
-                    [d cache:self didDownloadImage:i forURL:url];
+                    [d cache:self didDownloadImage:image forURL:url];
                 }
             }
         }];
