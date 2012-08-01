@@ -61,10 +61,10 @@ JMImageCache *_sharedCache = nil;
 
 - (void) _downloadAndWriteImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        __unsafe_unretained NSData *data = [NSData dataWithContentsOfURL:url];
+        NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *i = [[UIImage alloc] initWithData:data];
 
-        __unsafe_unretained NSString *cachePath = cachePathForURL(url);
+        NSString *cachePath = cachePathForURL(url);
         NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(writeData:toPath:)]];
         
         [writeInvocation setTarget:self];
