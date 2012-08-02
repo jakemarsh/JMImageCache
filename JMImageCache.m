@@ -61,6 +61,12 @@ JMImageCache *_sharedCache = nil;
 }
 
 - (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
+    if (!key && !url) return;
+
+    if (!key) {
+        key = keyForURL(url);
+    }
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *i = [[UIImage alloc] initWithData:data];
@@ -124,19 +130,18 @@ JMImageCache *_sharedCache = nil;
 #pragma mark Getter Methods
 
 - (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
-    if(!key) return;
+
 	UIImage *i = [self cachedImageForKey:key];
 
 	if(i) {
 		if(completion) completion(i);
-	} else if(url) {
+	} else {
         [self _downloadAndWriteImageForURL:url key:key completionBlock:completion];
     }
 }
 
 - (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion {
-    NSString *key = keyForURL(url);
-    [self imageForURL:url key:key completionBlock:completion];
+    [self imageForURL:url key:keyForURL(url) completionBlock:completion];
 }
 
 - (UIImage *) cachedImageForKey:(NSString *)key {
