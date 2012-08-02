@@ -54,9 +54,6 @@ static char kJMImageURLObjectKey;
         i = [[JMImageCache sharedCache] cachedImageForURL:url];
     }
 
-    i = [[JMImageCache sharedCache] cachedImageForURL:url];
-
-
 	if(i) {
         self.image = i;
         self.jm_imageURL = nil;
