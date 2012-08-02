@@ -124,14 +124,12 @@ JMImageCache *_sharedCache = nil;
 #pragma mark Getter Methods
 
 - (void) imageForURL:(NSURL *)url withKey:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
-	if(!key) return;
-	if(!url) return;
-
+    if(!key) return;
 	UIImage *i = [self cachedImageForKey:key];
 
 	if(i) {
 		if(completion) completion(i);
-	} else {
+	} else if(url) {
         [self _downloadAndWriteImageForURL:url withKey:key completionBlock:completion];
     }
 }
