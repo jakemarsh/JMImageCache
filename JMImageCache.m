@@ -18,10 +18,11 @@ static inline NSString *JMImageCacheDirectory() {
 	return _JMImageCacheDirectory;
 }
 inline static NSString *keyForURL(NSURL *url) {
-	return [NSString stringWithFormat:@"JMImageCache-%u", [[url absoluteString] hash]];
+	return [url absoluteString];
 }
 static inline NSString *cachePathForKey(NSString *key) {
-	return [JMImageCacheDirectory() stringByAppendingPathComponent:key];
+    NSString *fileName = [NSString stringWithFormat:@"JMImageCache-%u", [key hash]];
+	return [JMImageCacheDirectory() stringByAppendingPathComponent:fileName];
 }
 
 JMImageCache *_sharedCache = nil;
@@ -176,6 +177,9 @@ JMImageCache *_sharedCache = nil;
             if(d) {
                 if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
                     [d cache:self didDownloadImage:image forURL:url];
+                }
+                if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:withKey:)]) {
+                    [d cache:self didDownloadImage:image forURL:url withKey:key];
                 }
             }
         }];
