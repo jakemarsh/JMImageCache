@@ -11,7 +11,7 @@
 @interface UIImageView (JMImageCache)
 
 - (void) setImageWithURL:(NSURL *)url;
-
 - (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage;
+- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage;
 
 @end

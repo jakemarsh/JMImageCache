@@ -41,6 +41,16 @@ Request an image like so:
 }];
 ```
 
+If you need more control all the methods allow to specify the key of an image. 
+This can be used to keep track of different images associated with the same url (e.g. different border radius).
+This can also be used to access an image that might have been downloaded in situations where the url is not readily available.
+
+``` objective-c
+[cell.imageView setImageWithURL:urlWhichMightBeNil
+                            key:@"$ImageKey"
+                    placeholder:[UIImage imageNamed:@"placeholder.png"]];
+```
+
 ## Clearing The Cache
 
 The beauty of building on top of `NSCache` is that` JMImageCache` handles low memory situations gracefully. It will evict objects on its own when memory gets tight, you don't need to worry about it.

@@ -41,9 +41,18 @@ static char kJMImageURLObjectKey;
     [self setImageWithURL:url placeholder:nil];
 }
 - (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage {
+    [self setImageWithURL:url key:nil placeholder:placeholderImage];
+}
+- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage {
     self.jm_imageURL = url;
 
-	UIImage *i = [[JMImageCache sharedCache] cachedImageForURL:url];
+	UIImage *i;
+
+    if (key) {
+        i = [[JMImageCache sharedCache] cachedImageForKey:key];
+    } else {
+        i = [[JMImageCache sharedCache] cachedImageForURL:url];
+    }
 
 	if(i) {
         self.image = i;
@@ -53,10 +62,14 @@ static char kJMImageURLObjectKey;
 
         __block UIImageView *safeSelf = self;
 
-        [[JMImageCache sharedCache] imageForURL:url completionBlock:^(UIImage *image) {
+        [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
             if ([url isEqual:safeSelf.jm_imageURL]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    safeSelf.image = image;
+                    if(image) {
+                        safeSelf.image = image;
+                    } else {
+                        safeSelf.image = placeholderImage;
+                    }
                     safeSelf.jm_imageURL = nil;
                 });
             }
