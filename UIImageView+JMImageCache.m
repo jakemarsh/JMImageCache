@@ -62,7 +62,7 @@ static char kJMImageURLObjectKey;
 
         __block UIImageView *safeSelf = self;
 
-        [[JMImageCache sharedCache] imageForURL:url completionBlock:^(UIImage *image) {
+        [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
             if ([url isEqual:safeSelf.jm_imageURL]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if(image) {
