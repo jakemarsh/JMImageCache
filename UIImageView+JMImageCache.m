@@ -41,9 +41,18 @@ static char kJMImageURLObjectKey;
     [self setImageWithURL:url placeholder:nil];
 }
 - (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage {
+    [self setImageWithURL:url key:nil placeholder:placeholderImage];
+}
+- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage {
     self.jm_imageURL = url;
 
-	UIImage *i = [[JMImageCache sharedCache] cachedImageForURL:url];
+	UIImage *i;
+
+    if (key) {
+        i = [[JMImageCache sharedCache] cachedImageForKey:key];
+    } else {
+        i = [[JMImageCache sharedCache] cachedImageForURL:url];
+    }
 
 	if(i) {
         self.image = i;
