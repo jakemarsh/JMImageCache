@@ -31,7 +31,7 @@ JMImageCache *_sharedCache = nil;
 
 @property (strong, nonatomic) NSOperationQueue *diskOperationQueue;
 
-- (void) _downloadAndWriteImageForURL:(NSURL *)url withKey:(NSString *)key completionBlock:(void (^)(UIImage *image))completion;
+- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion;
 
 @end
 
@@ -60,7 +60,7 @@ JMImageCache *_sharedCache = nil;
 	return self;
 }
 
-- (void) _downloadAndWriteImageForURL:(NSURL *)url withKey:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
+- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *i = [[UIImage alloc] initWithData:data];
@@ -123,20 +123,20 @@ JMImageCache *_sharedCache = nil;
 #pragma mark -
 #pragma mark Getter Methods
 
-- (void) imageForURL:(NSURL *)url withKey:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
+- (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
     if(!key) return;
 	UIImage *i = [self cachedImageForKey:key];
 
 	if(i) {
 		if(completion) completion(i);
 	} else if(url) {
-        [self _downloadAndWriteImageForURL:url withKey:key completionBlock:completion];
+        [self _downloadAndWriteImageForURL:url key:key completionBlock:completion];
     }
 }
 
 - (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion {
     NSString *key = keyForURL(url);
-    [self imageForURL:url withKey:key completionBlock:completion];
+    [self imageForURL:url key:key completionBlock:completion];
 }
 
 - (UIImage *) cachedImageForKey:(NSString *)key {
@@ -161,7 +161,7 @@ JMImageCache *_sharedCache = nil;
     return [self cachedImageForKey:key];
 }
 
-- (UIImage *) imageForURL:(NSURL *)url withKey:(NSString*)key delegate:(id<JMImageCacheDelegate>)d {
+- (UIImage *) imageForURL:(NSURL *)url key:(NSString*)key delegate:(id<JMImageCacheDelegate>)d {
 	if(!url) return nil;
 
 	UIImage *i = [self cachedImageForURL:url];
@@ -169,13 +169,13 @@ JMImageCache *_sharedCache = nil;
 	if(i) {
 		return i;
 	} else {
-        [self _downloadAndWriteImageForURL:url withKey:key completionBlock:^(UIImage *image) {
+        [self _downloadAndWriteImageForURL:url key:key completionBlock:^(UIImage *image) {
             if(d) {
                 if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:)]) {
                     [d cache:self didDownloadImage:image forURL:url];
                 }
-                if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:withKey:)]) {
-                    [d cache:self didDownloadImage:image forURL:url withKey:key];
+                if([d respondsToSelector:@selector(cache:didDownloadImage:forURL:key:)]) {
+                    [d cache:self didDownloadImage:image forURL:url key:key];
                 }
             }
         }];
@@ -185,7 +185,7 @@ JMImageCache *_sharedCache = nil;
 }
 
 - (UIImage *) imageForURL:(NSURL *)url delegate:(id<JMImageCacheDelegate>)d {
-    return [self imageForURL:url withKey:keyForURL(url) delegate:d];
+    return [self imageForURL:url key:keyForURL(url) delegate:d];
 }
 
 - (UIImage *) imageFromDiskForKey:(NSString *)key {

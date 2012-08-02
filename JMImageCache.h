@@ -14,7 +14,7 @@
 
 @optional
 - (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSURL *)url;
-- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSURL *)url withKey:(NSString*)key;
+- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSURL *)url key:(NSString*)key;
 
 @end
 
@@ -22,13 +22,13 @@
 
 + (JMImageCache *) sharedCache;
 
-- (void) imageForURL:(NSURL *)url withKey:(NSString *)key completionBlock:(void (^)(UIImage *image))completion;
+- (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion;
 - (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion;
 
 - (UIImage *) cachedImageForKey:(NSString *)key;
 - (UIImage *) cachedImageForURL:(NSURL *)url;
 
-- (UIImage *) imageForURL:(NSURL *)url withKey:(NSString*)key delegate:(id<JMImageCacheDelegate>)d;
+- (UIImage *) imageForURL:(NSURL *)url key:(NSString*)key delegate:(id<JMImageCacheDelegate>)d;
 - (UIImage *) imageForURL:(NSURL *)url delegate:(id<JMImageCacheDelegate>)d;
 
 - (UIImage *) imageFromDiskForKey:(NSString *)key;
