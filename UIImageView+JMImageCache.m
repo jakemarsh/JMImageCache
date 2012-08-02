@@ -54,6 +54,9 @@ static char kJMImageURLObjectKey;
         i = [[JMImageCache sharedCache] cachedImageForURL:url];
     }
 
+    i = [[JMImageCache sharedCache] cachedImageForURL:url];
+
+
 	if(i) {
         self.image = i;
         self.jm_imageURL = nil;
@@ -65,7 +68,11 @@ static char kJMImageURLObjectKey;
         [[JMImageCache sharedCache] imageForURL:url completionBlock:^(UIImage *image) {
             if ([url isEqual:safeSelf.jm_imageURL]) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    safeSelf.image = image;
+                    if(image) {
+                        safeSelf.image = image;
+                    } else {
+                        safeSelf.image = placeholderImage;
+                    }
                     safeSelf.jm_imageURL = nil;
                 });
             }
