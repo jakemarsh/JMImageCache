@@ -132,9 +132,7 @@ JMImageCache *_sharedCache = nil;
 	if(i) {
 		if(completion) completion(i);
 	} else {
-        [self _downloadAndWriteImageForURL:url withKey:key completionBlock:^(UIImage *image){
-            if(completion) completion(image);
-        }];
+        [self _downloadAndWriteImageForURL:url withKey:key completionBlock:completion];
     }
 }
 
