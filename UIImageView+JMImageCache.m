@@ -45,36 +45,41 @@ static char kJMImageURLObjectKey;
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage {
     self.jm_imageURL = url;
-
-	UIImage *i;
-
-    if (key) {
-        i = [[JMImageCache sharedCache] cachedImageForKey:key];
-    } else {
-        i = [[JMImageCache sharedCache] cachedImageForURL:url];
-    }
-
-	if(i) {
-        self.image = i;
-        self.jm_imageURL = nil;
-	} else {
-        self.image = placeholderImage;
-
-        __block UIImageView *safeSelf = self;
-
-        [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
-            if ([url isEqual:safeSelf.jm_imageURL]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(image) {
-                        safeSelf.image = image;
-                    } else {
-                        safeSelf.image = placeholderImage;
-                    }
-                    safeSelf.jm_imageURL = nil;
-                });
-            }
-        }];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage *i;
+        
+        if (key) {
+            i = [[JMImageCache sharedCache] cachedImageForKey:key];
+        } else {
+            i = [[JMImageCache sharedCache] cachedImageForURL:url];
+        }
+        
+        if(i) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.image = i;
+                self.jm_imageURL = nil;
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.image = placeholderImage;
+            });
+            
+            __weak UIImageView *safeSelf = self;
+            
+            [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
+                if ([url isEqual:safeSelf.jm_imageURL]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(image) {
+                            safeSelf.image = image;
+                        } else {
+                            safeSelf.image = placeholderImage;
+                        }
+                        safeSelf.jm_imageURL = nil;
+                    });
+                }
+            }];
+        }
+    });
 }
 
 @end
