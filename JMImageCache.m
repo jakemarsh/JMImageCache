@@ -70,7 +70,9 @@ JMImageCache *_sharedCache = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *data = [NSData dataWithContentsOfURL:url];
         UIImage *i = [[UIImage alloc] initWithData:data];
-
+        // stop process if the method could not initialize the image from the specified data
+        if (!i) return;
+        
         NSString *cachePath = cachePathForKey(key);
         NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(writeData:toPath:)]];
 
