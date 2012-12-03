@@ -7,7 +7,7 @@
 //
 
 #import "DemoViewController.h"
-#import "DemoTableViewCell.h"
+#import "JMImageCache.h"
 
 @interface DemoViewController ()
 
@@ -35,6 +35,9 @@
     [self.modelArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iNI/Untitled-7.png", @"ImageURL", @"Kevin Malone", @"Title", nil]];
     [self.modelArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"http://cl.ly/4iAX/Untitled-7.png", @"ImageURL", @"Stanley Hudson", @"Title", nil]];		
 
+    // You should remove this next line from your apps!!!
+    // It is only here for demonstration purposes, so you can get an idea for what it's like to load images "fresh" for the first time.
+
     [[JMImageCache sharedCache] removeAllObjects];
 
 	return self;
@@ -61,15 +64,17 @@
 	return [self.modelArray count];
 }
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	DemoTableViewCell *cell = (DemoTableViewCell* )[tableView dequeueReusableCellWithIdentifier:@"JMImageTableViewCell"];
-	if(cell == nil) cell = [[DemoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"JMImageTableViewCell"];
+    static NSString *CellIdentifier = @"Cell";
+
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if(cell == nil) cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 
     NSString *urlString = [[self.modelArray objectAtIndex:indexPath.row] objectForKey:@"ImageURL"];
 
-    [cell.imageView setImageWithURL:[NSURL URLWithString:urlString] 
-                        placeholder:[UIImage imageNamed:@"placeholder"]];
-
 	cell.textLabel.text = [[self.modelArray objectAtIndex:indexPath.row] objectForKey:@"Title"];
+
+    [cell.imageView setImageWithURL:[NSURL URLWithString:urlString]
+                        placeholder:[UIImage imageNamed:@"placeholder"]];
 
 	return cell;
 }

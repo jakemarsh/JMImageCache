@@ -45,27 +45,39 @@ static char kJMImageURLObjectKey;
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage {
     self.jm_imageURL = url;
+    self.image = placeholderImage;
+
+    [self setNeedsDisplay];
+    [self setNeedsLayout];
+
+    __weak UIImageView *safeSelf = self;
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImage *i;
-        
+
         if (key) {
             i = [[JMImageCache sharedCache] cachedImageForKey:key];
         } else {
             i = [[JMImageCache sharedCache] cachedImageForURL:url];
         }
-        
+
         if(i) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = i;
-                self.jm_imageURL = nil;
+                safeSelf.jm_imageURL = nil;
+
+                safeSelf.image = i;
+
+                [safeSelf setNeedsLayout];
+                [safeSelf setNeedsDisplay];
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.image = placeholderImage;
+                safeSelf.image = placeholderImage;
+
+                [safeSelf setNeedsDisplay];
+                [safeSelf setNeedsLayout];
             });
-            
-            __weak UIImageView *safeSelf = self;
-            
+
             [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
                 if ([url isEqual:safeSelf.jm_imageURL]) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -74,7 +86,11 @@ static char kJMImageURLObjectKey;
                         } else {
                             safeSelf.image = placeholderImage;
                         }
+
                         safeSelf.jm_imageURL = nil;
+
+                        [safeSelf setNeedsLayout];
+                        [safeSelf setNeedsDisplay];
                     });
                 }
             }];
