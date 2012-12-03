@@ -216,7 +216,7 @@ JMImageCache *_sharedCache = nil;
     [self setImage:i forKey:keyForURL(url)];
 }
 - (void) removeImageForKey:(NSString *)key {
-	[super removeObjectForKey:key];
+	[self removeObjectForKey:key];
 }
 - (void) removeImageForURL:(NSURL *)url {
     [self removeImageForKey:keyForURL(url)];
