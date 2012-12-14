@@ -43,7 +43,13 @@ static char kJMImageURLObjectKey;
 - (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage {
     [self setImageWithURL:url key:nil placeholder:placeholderImage];
 }
+- (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *))completionBlock {
+    [self setImageWithURL:url key:nil placeholder:placeholderImage completionBlock:completionBlock];
+}
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage {
+    [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:nil];
+}
+- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock {
     self.jm_imageURL = url;
     self.image = placeholderImage;
 
@@ -91,6 +97,8 @@ static char kJMImageURLObjectKey;
 
                         [safeSelf setNeedsLayout];
                         [safeSelf setNeedsDisplay];
+
+                        if (completionBlock) completionBlock(image);
                     });
                 }
             }];
