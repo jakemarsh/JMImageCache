@@ -44,12 +44,18 @@ static char kJMImageURLObjectKey;
     [self setImageWithURL:url key:nil placeholder:placeholderImage];
 }
 - (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *))completionBlock {
-    [self setImageWithURL:url key:nil placeholder:placeholderImage completionBlock:completionBlock];
+    [self setImageWithURL:url key:nil placeholder:placeholderImage completionBlock:completionBlock failureBlock:nil];
+}
+- (void) setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock {
+    [self setImageWithURL:url key:nil placeholder:placeholderImage completionBlock:completionBlock failureBlock:failureBlock];
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage {
     [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:nil];
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock {
+    [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:completionBlock];
+}
+- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock{
     self.jm_imageURL = url;
     self.image = placeholderImage;
 
@@ -101,6 +107,10 @@ static char kJMImageURLObjectKey;
                         if (completionBlock) completionBlock(image);
                     });
                 }
+            }
+            failureBlock:^(NSURLRequest *request, NSURLResponse *response, NSError* error)
+            {
+                if (failureBlock) failureBlock(request, response, error);
             }];
         }
     });
