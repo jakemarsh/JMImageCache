@@ -30,7 +30,7 @@ static inline NSString *cachePathForKey(NSString *key) {
 
 @property (strong, nonatomic) NSOperationQueue *diskOperationQueue;
 
-- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion;
+- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure;
 
 @end
 
@@ -62,7 +62,8 @@ static inline NSString *cachePathForKey(NSString *key) {
 	return self;
 }
 
-- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
+- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure
+{
     if (!key && !url) return;
 
     if (!key) {
@@ -70,25 +71,49 @@ static inline NSString *cachePathForKey(NSString *key) {
     }
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        UIImage *i = [[UIImage alloc] initWithData:data];
-        // stop process if the method could not initialize the image from the specified data
-        if (!i) return;
         
-        NSString *cachePath = cachePathForKey(key);
-        NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(writeData:toPath:)]];
-
-        [writeInvocation setTarget:self];
-        [writeInvocation setSelector:@selector(writeData:toPath:)];
-        [writeInvocation setArgument:&data atIndex:2];
-        [writeInvocation setArgument:&cachePath atIndex:3];
-
-        [self performDiskWriteOperation:writeInvocation];
-        [self setImage:i forKey:key];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if(completion) completion(i);
-        });
+        NSURLRequest* request = [NSURLRequest requestWithURL:url];
+        NSURLResponse* response = nil;
+        NSError* error = nil;
+        NSData* data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        
+        if (error)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if(failure)  failure(request, response, error);
+            });
+            return;
+        }
+        
+        UIImage *i = [[UIImage alloc] initWithData:data];
+        if (!i)
+        {
+            NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
+            [errorDetail setValue:[NSString stringWithFormat:@"Failed to init image with data from for URL: %@", url] forKey:NSLocalizedDescriptionKey];
+            NSError* error = [NSError errorWithDomain:@"JMImageCacheErrorDomain" code:1 userInfo:errorDetail];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if(failure) failure(request, response, error);
+            });
+        }
+        else
+        {
+            NSString *cachePath = cachePathForKey(key);
+            NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(writeData:toPath:)]];
+            
+            [writeInvocation setTarget:self];
+            [writeInvocation setSelector:@selector(writeData:toPath:)];
+            [writeInvocation setArgument:&data atIndex:2];
+            [writeInvocation setArgument:&cachePath atIndex:3];
+            
+            [self performDiskWriteOperation:writeInvocation];
+            [self setImage:i forKey:key];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(completion) completion(i);
+            });
+        }
     });
 }
 
@@ -133,19 +158,19 @@ static inline NSString *cachePathForKey(NSString *key) {
 #pragma mark -
 #pragma mark Getter Methods
 
-- (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion {
+- (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure{
 
 	UIImage *i = [self cachedImageForKey:key];
 
 	if(i) {
 		if(completion) completion(i);
 	} else {
-        [self _downloadAndWriteImageForURL:url key:key completionBlock:completion];
+        [self _downloadAndWriteImageForURL:url key:key completionBlock:completion failureBlock:failure];
     }
 }
 
-- (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion {
-    [self imageForURL:url key:keyForURL(url) completionBlock:completion];
+- (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure{
+    [self imageForURL:url key:keyForURL(url) completionBlock:completion failureBlock:(failure)];
 }
 
 - (UIImage *) cachedImageForKey:(NSString *)key {
@@ -187,7 +212,8 @@ static inline NSString *cachePathForKey(NSString *key) {
                     [d cache:self didDownloadImage:image forURL:url key:key];
                 }
             }
-        }];
+        }
+        failureBlock:nil];
     }
 
     return nil;
