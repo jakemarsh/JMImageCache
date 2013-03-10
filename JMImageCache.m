@@ -8,12 +8,13 @@
 
 #import "JMImageCache.h"
 
-static NSString *_JMImageCacheDirectory;
-
 static inline NSString *JMImageCacheDirectory() {
-	if(!_JMImageCacheDirectory) {
+	static NSString *_JMImageCacheDirectory;
+	static dispatch_once_t onceToken;
+    
+	dispatch_once(&onceToken, ^{
 		_JMImageCacheDirectory = [[NSHomeDirectory() stringByAppendingPathComponent:@"Library/Caches/JMCache"] copy];
-	}
+	});
 
 	return _JMImageCacheDirectory;
 }
@@ -24,8 +25,6 @@ static inline NSString *cachePathForKey(NSString *key) {
     NSString *fileName = [NSString stringWithFormat:@"JMImageCache-%u", [key hash]];
 	return [JMImageCacheDirectory() stringByAppendingPathComponent:fileName];
 }
-
-JMImageCache *_sharedCache = nil;
 
 @interface JMImageCache ()
 
@@ -40,9 +39,12 @@ JMImageCache *_sharedCache = nil;
 @synthesize diskOperationQueue = _diskOperationQueue;
 
 + (JMImageCache *) sharedCache {
-	if(!_sharedCache) {
+	static JMImageCache *_sharedCache = nil;
+	static dispatch_once_t onceToken;
+
+	dispatch_once(&onceToken, ^{
 		_sharedCache = [[JMImageCache alloc] init];
-	}
+	});
 
 	return _sharedCache;
 }
