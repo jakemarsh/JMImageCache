@@ -58,7 +58,7 @@ static char kJMImageURLObjectKey;
 
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock{
     self.jm_imageURL = url;
-    [self assignImage:placeholderImage refreshSafeSelf:self];
+    [self assignImage:placeholderImage];
     
     __unsafe_unretained UIImageView *safeSelf = self;
     
@@ -67,9 +67,9 @@ static char kJMImageURLObjectKey;
             if ([url isEqual:safeSelf.jm_imageURL]) {
                 
                 if (image) {
-                    [self assignImage:image onMainQueueWithSafeSelf:safeSelf];
+                    [safeSelf assignImageOnMainQueue:image];
                 } else {
-                    [self assignImage:placeholderImage onMainQueueWithSafeSelf:safeSelf];
+                    [safeSelf assignImageOnMainQueue:placeholderImage];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
@@ -87,9 +87,9 @@ static char kJMImageURLObjectKey;
     });
 }
 
-- (void)assignImage:(UIImage *)cachedImage onMainQueueWithSafeSelf:(__unsafe_unretained UIImageView *)safeSelf{
+- (void)assignImageOnMainQueue:(UIImage *)cachedImage {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self assignImage:cachedImage refreshSafeSelf:safeSelf];
+        [self assignImage:cachedImage];
     });
 }
 
@@ -103,11 +103,11 @@ static char kJMImageURLObjectKey;
     return cachedImage;
 }
 
-- (void) assignImage:(UIImage *)cachedImage refreshSafeSelf:(__unsafe_unretained UIImageView *)safeSelf {
-    safeSelf.image = cachedImage;
+- (void)assignImage:(UIImage *)cachedImage {
+    self.image = cachedImage;
     
-    [safeSelf setNeedsLayout];
-    [safeSelf setNeedsDisplay];
+    [self setNeedsLayout];
+    [self setNeedsDisplay];
 }
 
 @end
