@@ -63,11 +63,11 @@ static char kJMImageURLObjectKey;
     __unsafe_unretained UIImageView *safeSelf = self;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
+        [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
             if ([url isEqual:safeSelf.jm_imageURL]) {
-
+                
                 if (image) {
-                [self assignImage:image onMainQueueWithSafeSelf:safeSelf];
+                    [self assignImage:image onMainQueueWithSafeSelf:safeSelf];
                 } else {
                     [self assignImage:placeholderImage onMainQueueWithSafeSelf:safeSelf];
                 }
@@ -89,8 +89,6 @@ static char kJMImageURLObjectKey;
 
 - (void)assignImage:(UIImage *)cachedImage onMainQueueWithSafeSelf:(__unsafe_unretained UIImageView *)safeSelf{
     dispatch_async(dispatch_get_main_queue(), ^{
-        safeSelf.jm_imageURL = nil;
-        
         [self assignImage:cachedImage refreshSafeSelf:safeSelf];
     });
 }
@@ -98,10 +96,10 @@ static char kJMImageURLObjectKey;
 - (UIImage *)getImageFromSharedCacheWith:(NSURL *)url key:(NSString *)key {
     UIImage *cachedImage;
     if (key) {
-            cachedImage = [[JMImageCache sharedCache] cachedImageForKey:key];
-        } else {
-            cachedImage = [[JMImageCache sharedCache] cachedImageForURL:url];
-        }
+        cachedImage = [[JMImageCache sharedCache] cachedImageForKey:key];
+    } else {
+        cachedImage = [[JMImageCache sharedCache] cachedImageForURL:url];
+    }
     return cachedImage;
 }
 
