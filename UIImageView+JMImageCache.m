@@ -55,54 +55,44 @@ static char kJMImageURLObjectKey;
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock {
     [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:completionBlock failureBlock:nil];
 }
+
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock{
     self.jm_imageURL = url;
-    self.image = placeholderImage;
-
-    [self setNeedsDisplay];
-    [self setNeedsLayout];
-
-    __weak UIImageView *safeSelf = self;
+    [self assignImage:placeholderImage refreshSafeSelf:self];
+    
+    __unsafe_unretained UIImageView *safeSelf = self;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIImage *i;
+        UIImage *cachedImage;
 
         if (key) {
-            i = [[JMImageCache sharedCache] cachedImageForKey:key];
+            cachedImage = [[JMImageCache sharedCache] cachedImageForKey:key];
         } else {
-            i = [[JMImageCache sharedCache] cachedImageForURL:url];
+            cachedImage = [[JMImageCache sharedCache] cachedImageForURL:url];
         }
 
-        if(i) {
+        if(cachedImage) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 safeSelf.jm_imageURL = nil;
 
-                safeSelf.image = i;
-
-                [safeSelf setNeedsLayout];
-                [safeSelf setNeedsDisplay];
+                [self assignImage:cachedImage refreshSafeSelf:safeSelf];
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                safeSelf.image = placeholderImage;
-
-                [safeSelf setNeedsDisplay];
-                [safeSelf setNeedsLayout];
+                [self assignImage:placeholderImage refreshSafeSelf:safeSelf];
             });
 
             [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
                 if ([url isEqual:safeSelf.jm_imageURL]) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if(image) {
-                            safeSelf.image = image;
+                            [self assignImage:image refreshSafeSelf:safeSelf];
+
                         } else {
-                            safeSelf.image = placeholderImage;
+                            [self assignImage:placeholderImage refreshSafeSelf:safeSelf];
                         }
 
                         safeSelf.jm_imageURL = nil;
-
-                        [safeSelf setNeedsLayout];
-                        [safeSelf setNeedsDisplay];
 
                         if (completionBlock) completionBlock(image);
                     });
@@ -114,6 +104,13 @@ static char kJMImageURLObjectKey;
             }];
         }
     });
+}
+
+- (void)assignImage:(UIImage *)cachedImage refreshSafeSelf:(__unsafe_unretained UIImageView *)safeSelf {
+    safeSelf.image = cachedImage;
+    
+    [safeSelf setNeedsLayout];
+    [safeSelf setNeedsDisplay];
 }
 
 @end
