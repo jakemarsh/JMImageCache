@@ -162,6 +162,10 @@ static inline NSString *cachePathForKey(NSString *key) {
 
 	UIImage *i = [self cachedImageForKey:key];
 
+    if (!i) {
+        i = [self cachedImageForURL:url];
+    }
+    
 	if(i) {
 		if(completion) completion(i);
 	} else {
