@@ -77,7 +77,7 @@ static inline NSString *cachePathForKey(NSString *key) {
         
         NSMutableURLRequest* request = [NSURLRequest requestWithURL:url];
         
-        NSDate *lastUpdated = [safeSelf dateForImageURL:url key:key];
+        NSDate *lastUpdated = [safeSelf dateForImageKey:key];
         NSString *HTTPdate = [safeSelf httpDateForDate:lastUpdated];
         if (HTTPdate) {
             [request addValue:HTTPdate forHTTPHeaderField:@"If-Modified-Since"];
@@ -95,12 +95,14 @@ static inline NSString *cachePathForKey(NSString *key) {
             });
             return;
         }
+        
         NSInteger kUnModifiedHttpCode = 304;
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if (httpResponse.statusCode == kUnModifiedHttpCode)
         {
             return;
         }
+        
         UIImage *imageDownloaded = [[UIImage alloc] initWithData:data];
         if (!imageDownloaded)
         {
@@ -186,15 +188,11 @@ static inline NSString *cachePathForKey(NSString *key) {
     
 	UIImage *cachedImage = [self cachedImageForKey:key];
     
-    if (!cachedImage) {
-        cachedImage = [self cachedImageForURL:url];
-    }
-    
 	if(cachedImage) {
 		if(completion) completion(cachedImage);
-	} else {
-        [self _downloadAndWriteImageForURL:url key:key completionBlock:completion failureBlock:failure];
     }
+        [self _downloadAndWriteImageForURL:url key:key completionBlock:completion failureBlock:failure];
+
 }
 
 - (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure{
@@ -259,16 +257,10 @@ static inline NSString *cachePathForKey(NSString *key) {
 	return i;
 }
 
-- (NSDate *)dateForImageURL:(NSURL *)url key:(NSString *)key {
+- (NSDate *)dateForImageKey:(NSString *)key {
     
     NSString *pathToImage = cachePathForKey(key);
-    
-    if(!pathToImage)
-    {
-        NSString *keyForPathToImage = keyForURL(url);
-        pathToImage = cachePathForKey(keyForPathToImage);
-    }
-    
+
     if(!pathToImage)
         return nil;
     
