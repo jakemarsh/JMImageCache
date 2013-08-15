@@ -60,7 +60,7 @@ static char kJMImageURLObjectKey;
     self.jm_imageURL = url;
     [self assignImage:placeholderImage];
     
-    __unsafe_unretained UIImageView *safeSelf = self;
+    __weak UIImageView *safeSelf = self;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {

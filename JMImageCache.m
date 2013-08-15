@@ -70,12 +70,12 @@ static inline NSString *cachePathForKey(NSString *key) {
         key = keyForURL(url);
     }
     
-    __unsafe_unretained JMImageCache *safeSelf = self;
+    __weak JMImageCache *safeSelf = self;
     
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        NSMutableURLRequest* request = [NSURLRequest requestWithURL:url];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
         
         NSDate *lastUpdated = [safeSelf dateForImageKey:key];
         NSString *HTTPdate = [safeSelf httpDateForDate:lastUpdated];
