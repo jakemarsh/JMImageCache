@@ -186,6 +186,10 @@ static inline NSString *cachePathForKey(NSString *key) {
 
 - (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure{
     
+    if (!key) {
+        key = keyForURL(url);
+    }
+    
 	UIImage *cachedImage = [self cachedImageForKey:key];
     
 	if(cachedImage) {
