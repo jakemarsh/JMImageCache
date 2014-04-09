@@ -81,6 +81,8 @@ static char kJMImageURLObjectKey;
 
                 [safeSelf setNeedsLayout];
                 [safeSelf setNeedsDisplay];
+
+                if (completionBlock) completionBlock(i);
             });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
