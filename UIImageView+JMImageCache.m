@@ -53,67 +53,61 @@ static char kJMImageURLObjectKey;
     [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:nil];
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock {
-    [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:completionBlock];
+    [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:completionBlock failureBlock:nil];
 }
+
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock{
     self.jm_imageURL = url;
-    self.image = placeholderImage;
-
-    [self setNeedsDisplay];
-    [self setNeedsLayout];
-
+    [self assignImage:placeholderImage];
+    
     __weak UIImageView *safeSelf = self;
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIImage *i;
-
-        if (key) {
-            i = [[JMImageCache sharedCache] cachedImageForKey:key];
-        } else {
-            i = [[JMImageCache sharedCache] cachedImageForURL:url];
-        }
-
-        if(i) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                safeSelf.jm_imageURL = nil;
-
-                safeSelf.image = i;
-
-                [safeSelf setNeedsLayout];
-                [safeSelf setNeedsDisplay];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                safeSelf.image = placeholderImage;
-
-                [safeSelf setNeedsDisplay];
-                [safeSelf setNeedsLayout];
-            });
-
-            [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
-                if ([url isEqual:safeSelf.jm_imageURL]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if(image) {
-                            safeSelf.image = image;
-                        } else {
-                            safeSelf.image = placeholderImage;
-                        }
-
-                        safeSelf.jm_imageURL = nil;
-
-                        [safeSelf setNeedsLayout];
-                        [safeSelf setNeedsDisplay];
-
-                        if (completionBlock) completionBlock(image);
-                    });
+        [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
+            if ([url isEqual:safeSelf.jm_imageURL]) {
+                
+                if (image) {
+                    [safeSelf assignImageOnMainQueue:image];
+                } else {
+                    [safeSelf assignImageOnMainQueue:placeholderImage];
                 }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    safeSelf.jm_imageURL = nil;
+                    
+                    if (completionBlock) completionBlock(image);
+                });
             }
-            failureBlock:^(NSURLRequest *request, NSURLResponse *response, NSError* error)
-            {
-                if (failureBlock) failureBlock(request, response, error);
-            }];
         }
+                                   failureBlock:^(NSURLRequest *request, NSURLResponse *response, NSError* error)
+         {
+             if (failureBlock) failureBlock(request, response, error);
+         }];
+        
     });
+}
+
+- (void)assignImageOnMainQueue:(UIImage *)cachedImage {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self assignImage:cachedImage];
+    });
+}
+
+- (UIImage *)getImageFromSharedCacheWith:(NSURL *)url key:(NSString *)key {
+    UIImage *cachedImage;
+    if (key) {
+        cachedImage = [[JMImageCache sharedCache] cachedImageForKey:key];
+    } else {
+        cachedImage = [[JMImageCache sharedCache] cachedImageForURL:url];
+    }
+    return cachedImage;
+}
+
+- (void)assignImage:(UIImage *)cachedImage {
+    self.image = cachedImage;
+    
+    [self setNeedsLayout];
+    [self setNeedsDisplay];
 }
 
 @end
