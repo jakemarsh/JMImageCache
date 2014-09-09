@@ -22,7 +22,7 @@ inline static NSString *keyForURL(NSURL *url) {
 	return [url absoluteString];
 }
 static inline NSString *cachePathForKey(NSString *key) {
-    NSString *fileName = [NSString stringWithFormat:@"JMImageCache-%u", [key hash]];
+    NSString *fileName = [NSString stringWithFormat:@"JMImageCache-%@", [JMImageCache SHA1FromString:key]];
 	return [JMImageCacheDirectory() stringByAppendingPathComponent:fileName];
 }
 
@@ -260,6 +260,27 @@ static inline NSString *cachePathForKey(NSString *key) {
 	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithInvocation:invoction];
     
 	[self.diskOperationQueue addOperation:operation];
+}
+
+#pragma mark - Hash methods
+
++ (NSString *)SHA1FromString:(NSString *)string
+{
+    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
+    
+    NSData *stringBytes = [string dataUsingEncoding:NSUTF8StringEncoding];
+    
+    if (CC_SHA1([stringBytes bytes], (CC_LONG)[stringBytes length], digest)) {
+        
+        NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+        
+        for (int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++) {
+            [output appendFormat:@"%02x", digest[i]];
+        }
+        
+        return output;
+    }
+    return nil;
 }
 
 @end
