@@ -8,38 +8,23 @@
 
 #import "UIImageView+JMImageCache.h"
 
-@class JMImageCache;
-
-@protocol JMImageCacheDelegate <NSObject>
-
-@optional
-- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSURL *)url;
-- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSURL *)url key:(NSString*)key;
-
-@end
-
 @interface JMImageCache : NSCache
 
 + (JMImageCache *) sharedCache;
 
-- (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure;
-- (void) imageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *image))completion failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failure;
+- (void) imageForURL:(NSURL *)url key:(NSString *)key completionBlock:(JMICCompletionBlock)completion failureBlock:(JMICFailureBlock)failure;
+- (void) imageForURL:(NSURL *)url completionBlock:(JMICCompletionBlock)completion failureBlock:(JMICFailureBlock)failure;
 
-- (UIImage *) cachedImageForKey:(NSString *)key;
-- (UIImage *) cachedImageForURL:(NSURL *)url;
+- (UIImage *) cachedImageForURL:(NSURL *)url key:(NSString *)key;;
 
-- (UIImage *) imageForURL:(NSURL *)url key:(NSString*)key delegate:(id<JMImageCacheDelegate>)d;
-- (UIImage *) imageForURL:(NSURL *)url delegate:(id<JMImageCacheDelegate>)d;
+- (UIImage *) imageFromDiskForURL:(NSURL *)url key:(NSString *)key;;
 
-- (UIImage *) imageFromDiskForKey:(NSString *)key;
-- (UIImage *) imageFromDiskForURL:(NSURL *)url;
-
-- (void) setImage:(UIImage *)i forKey:(NSString *)key;
-- (void) setImage:(UIImage *)i forURL:(NSURL *)url;
-- (void) removeImageForKey:(NSString *)key;
-- (void) removeImageForURL:(NSURL *)url;
+- (void) setImage:(UIImage *)i forURL:(NSURL *)url key:(NSString *)key;
+- (void) removeImageForURL:(NSURL *)url key:(NSString *)key;
 
 - (void) writeData:(NSData *)data toPath:(NSString *)path;
 - (void) performDiskWriteOperation:(NSInvocation *)invoction;
+
+- (void) _downloadAndWriteImageForURL:(NSURL *)url key:(NSString *)key completionBlock:(JMICCompletionBlock)completion failureBlock:(JMICFailureBlock)failure;
 
 @end
