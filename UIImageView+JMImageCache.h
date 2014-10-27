@@ -29,6 +29,7 @@ typedef void (^JMICFailureBlock)(NSURLRequest *request, NSURLResponse *response,
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock;
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(JMICFailureBlock)failure;
 
+/// key优先，无key时使用url；key无法用于从网上获取图片，仅能用于读缓存
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key options:(JMImageCacheDownloadOptions)options placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(JMICFailureBlock)failureBlock;
 
 @end

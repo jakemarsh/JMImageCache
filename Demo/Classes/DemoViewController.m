@@ -68,10 +68,10 @@ static NSString *CellIdentifier = @"Cell"; // cell identifier
     NSDictionary *cellDic = (self.modelArray)[indexPath.row];
 	cell.textLabel.text = cellDic[@"Title"];
 
-    NSURL *url = [NSURL URLWithString:cellDic[@"ImageURL"]];
-    JMImageCacheDownloadOptions option = JMImageCacheDownloadOptionsSearchCacheOnly | JMImageCacheDownloadOptionsClickToDownload;
-    option |= JMImageCacheDownloadOptionsClickToRefresh;
-    [cell.imageView setImageWithURL:url
+    JMImageCacheDownloadOptions option = JMImageCacheDownloadOptionsClickToDownload;
+//    option |= JMImageCacheDownloadOptionsClickToRefresh;
+    option |= JMImageCacheDownloadOptionsSearchCacheOnly;
+    [cell.imageView setImageWithURL:[NSURL URLWithString:cellDic[@"ImageURL"]]
                                 key:nil
                             options:option
                         placeholder:[UIImage imageNamed:@"placeholder"]

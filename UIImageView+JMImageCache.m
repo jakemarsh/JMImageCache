@@ -116,58 +116,8 @@ static char kFailureBlock;
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock {
     [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:completionBlock failureBlock:nil];
 }
-- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock{
-    self.jm_imageURL = url;
-    self.image = placeholderImage;
-
-    [self setNeedsDisplay];
-    [self setNeedsLayout];
-
-    __weak UIImageView *safeSelf = self;
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIImage *i = [[JMImageCache sharedCache] cachedImageForURL:url key:key];
-        if(i) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                safeSelf.jm_imageURL = nil;
-
-                safeSelf.image = i;
-
-                [safeSelf setNeedsLayout];
-                [safeSelf setNeedsDisplay];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                safeSelf.image = placeholderImage;
-
-                [safeSelf setNeedsDisplay];
-                [safeSelf setNeedsLayout];
-            });
-
-            [[JMImageCache sharedCache] imageForURL:url key:key completionBlock:^(UIImage *image) {
-                if ([url isEqual:safeSelf.jm_imageURL]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if(image) {
-                            safeSelf.image = image;
-                        } else {
-                            safeSelf.image = placeholderImage;
-                        }
-
-                        safeSelf.jm_imageURL = nil;
-
-                        [safeSelf setNeedsLayout];
-                        [safeSelf setNeedsDisplay];
-
-                        if (completionBlock) completionBlock(image);
-                    });
-                }
-            }
-            failureBlock:^(NSURLRequest *request, NSURLResponse *response, NSError* error)
-            {
-                if (failureBlock) failureBlock(request, response, error);
-            }];
-        }
-    });
+- (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(JMICCompletionBlock)completionBlock failureBlock:(JMICFailureBlock)failureBlock {
+    [self setImageWithURL:url key:key options:JMImageCacheDownloadOptionsNone placeholder:placeholderImage completionBlock:nil failureBlock:nil];
 }
 
 
@@ -193,8 +143,29 @@ static char kFailureBlock;
     UIImage *i = [[JMImageCache sharedCache] imageFromDiskForURL:url key:key];
 
     self.image = i ? i : placeholderImage;
-    if (options & JMImageCacheDownloadOptionsSearchCacheOnly) {
+
+    // cacheOnly 优先，其次才是clickToRefresh，最次是clickToDownload
+    if (0 != (options & JMImageCacheDownloadOptionsSearchCacheOnly)) {
+        if (i) {
+            if (completionBlock) {
+                completionBlock(i);
+            }
+        } else {
+            if (failureBlock) {
+                NSError *err = [NSError errorWithDomain:@"JMImageCacheError" code:1 userInfo:@{NSLocalizedDescriptionKey : @"cache里未找到你要的图片"}];
+                failureBlock(nil, nil, err);
+            }
+        }
         return; // 结束
+    }
+
+    if (0 != (options & JMImageCacheDownloadOptionsClickToRefresh)) {
+        // continue to download
+    } else if (i) {
+        if (completionBlock) {
+            completionBlock(i);
+        }
+        return;
     }
     // 下载图片
     UIActivityIndicatorView *ai = (UIActivityIndicatorView *)[self viewWithTag:[self hash]];
@@ -221,11 +192,7 @@ static char kFailureBlock;
     } failureBlock:^(NSURLRequest *request, NSURLResponse *response, NSError *error) {
         self.image = i ? i : placeholderImage;
         [ai stopAnimating];
-        if (options & JMImageCacheDownloadOptionsClickToRefresh) {
-            //
-        } else if (options & JMImageCacheDownloadOptionsClickToDownload) {
-            [self removeGestureRecognizer:self.jm_tapGestureRecognizer];
-        }
+        
         if (failureBlock) {
             failureBlock(request, response, error);
         }
