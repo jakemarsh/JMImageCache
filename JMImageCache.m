@@ -22,7 +22,7 @@ inline static NSString *keyForURL(NSURL *url) {
 	return [url absoluteString];
 }
 static inline NSString *cachePathForKey(NSString *key) {
-    NSString *fileName = [NSString stringWithFormat:@"JMImageCache-%u", [key hash]];
+    NSString *fileName = [NSString stringWithFormat:@"JMImageCache-%tu", [key hash]];
 	return [JMImageCacheDirectory() stringByAppendingPathComponent:fileName];
 }
 
