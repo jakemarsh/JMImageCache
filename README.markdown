@@ -29,8 +29,18 @@ The idea behind `JMImageCache` is to always return images the **fastest** way po
 The clean and easy way (uses a category that `JMImageCache` adds to `UIImageView`):
 
 ``` objective-c
-[cell.imageView setImageWithURL:[NSURL URLWithString:@"http://dundermifflin.com/i/MichaelScott.png"]
-                        placeholder:[UIImage imageNamed:@"placeholder.png"]];
+    JMImageCacheDownloadOptions option = JMImageCacheDownloadOptionsClickToDownload;
+    // option |= JMImageCacheDownloadOptionsClickToRefresh;
+    option |= JMImageCacheDownloadOptionsSearchCacheOnly;
+    [cell.imageView setImageWithURL:[NSURL URLWithString:@"http://dundermifflin.com/i/MichaelScott.png"]
+                                key:nil
+                            options:option
+                        placeholder:[UIImage imageNamed:@"placeholder"]
+                    completionBlock:^(UIImage *image) {
+                        //
+                    } failureBlock:^(NSURLRequest *request, NSURLResponse *response, NSError *error) {
+                        //
+                    }];
 ```
 
 Request an image like so:
