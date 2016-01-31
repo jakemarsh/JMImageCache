@@ -53,7 +53,7 @@ static char kJMImageURLObjectKey;
     [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:nil];
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock {
-    [self setImageWithURL:url key:key placeholder:placeholderImage completionBlock:completionBlock];
+    [self setImageWithURL:url placeholder:placeholderImage completionBlock:completionBlock failureBlock:nil];
 }
 - (void) setImageWithURL:(NSURL *)url key:(NSString*)key placeholder:(UIImage *)placeholderImage completionBlock:(void (^)(UIImage *image))completionBlock failureBlock:(void (^)(NSURLRequest *request, NSURLResponse *response, NSError* error))failureBlock{
     self.jm_imageURL = url;
