@@ -7,6 +7,7 @@
 //
 
 #import "UIImageView+JMImageCache.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @class JMImageCache;
 
@@ -18,7 +19,9 @@
 
 @end
 
-@interface JMImageCache : NSCache
+@interface JMImageCache : NSCache{
+    NSURLSession *privateSession;
+}
 
 + (JMImageCache *) sharedCache;
 
@@ -41,5 +44,7 @@
 
 - (void) writeData:(NSData *)data toPath:(NSString *)path;
 - (void) performDiskWriteOperation:(NSInvocation *)invoction;
+
++ (NSString *)SHA1FromString:(NSString *)string;
 
 @end
