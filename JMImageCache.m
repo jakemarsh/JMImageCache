@@ -52,6 +52,8 @@ static inline NSString *cachePathForKey(NSString *key) {
 - (id) init {
     self = [super init];
     if(!self) return nil;
+    
+    privateSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"JMImageCache"]];
 
     self.diskOperationQueue = [[NSOperationQueue alloc] init];
 
@@ -69,25 +71,21 @@ static inline NSString *cachePathForKey(NSString *key) {
     if (!key) {
         key = keyForURL(url);
     }
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        NSURLRequest* request = [NSURLRequest requestWithURL:url];
-        NSURLResponse* response = nil;
-        NSError* error = nil;
-        NSData* data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];
+    
+    NSURLSessionDownloadTask *downloadImageTask = [privateSession downloadTaskWithRequest:request completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if(failure)  failure(request, response, error);
-            });
+            if(failure){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    failure(request, response, error);
+                });
+            }
             return;
         }
-        
-        UIImage *i = [[UIImage alloc] initWithData:data];
-        if (!i)
+        NSData *data = [NSData dataWithContentsOfURL:location];
+        UIImage *downloadedImage = [UIImage imageWithData: data];
+        if (!downloadedImage)
         {
             NSMutableDictionary *errorDetail = [NSMutableDictionary dictionary];
             [errorDetail setValue:[NSString stringWithFormat:@"Failed to init image with data from for URL: %@", url] forKey:NSLocalizedDescriptionKey];
@@ -96,25 +94,26 @@ static inline NSString *cachePathForKey(NSString *key) {
                 
                 if(failure) failure(request, response, error);
             });
-        }
-        else
-        {
+        }else{
             NSString *cachePath = cachePathForKey(key);
             NSInvocation *writeInvocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(writeData:toPath:)]];
-            
+        
             [writeInvocation setTarget:self];
             [writeInvocation setSelector:@selector(writeData:toPath:)];
             [writeInvocation setArgument:&data atIndex:2];
             [writeInvocation setArgument:&cachePath atIndex:3];
-            
+        
             [self performDiskWriteOperation:writeInvocation];
-            [self setImage:i forKey:key];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if(completion) completion(i);
-            });
+            [self setImage:downloadedImage forKey:key];
+            if(completion){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(downloadedImage);
+                });
+            }
         }
-    });
+    }];
+    
+    [downloadImageTask resume];
 }
 
 - (void) removeAllObjects {
