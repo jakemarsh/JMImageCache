@@ -13,3 +13,6 @@ project.xcworkspace
 .build/
 .swiftpm/
 Package.resolved
+
+# Xcode
+DerivedData/
