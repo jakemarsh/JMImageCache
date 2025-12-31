@@ -6,7 +6,10 @@ build/*
 *.pbxuser
 *.perspectivev3
 *.tm_build_errors
-*.mode1v3
-*.pbxuser
 xcuserdata
 project.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
