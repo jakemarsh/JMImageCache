@@ -31,6 +31,8 @@
 - (UIImage *) imageForURL:(NSURL *)url key:(NSString*)key delegate:(id<JMImageCacheDelegate>)d;
 - (UIImage *) imageForURL:(NSURL *)url delegate:(id<JMImageCacheDelegate>)d;
 
+- (UIImage *) imageFromMemoryForURL:(NSURL *)url;
+- (UIImage *) imageFromMemoryForKey:(NSString *)key;
 - (UIImage *) imageFromDiskForKey:(NSString *)key;
 - (UIImage *) imageFromDiskForURL:(NSURL *)url;
 
